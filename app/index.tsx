@@ -1,6 +1,7 @@
 import { Text, View } from "react-native";
-import { Image, StyleSheet, Platform, FlatList, ScrollView } from 'react-native';
+import { Image, StyleSheet, Platform, FlatList, TouchableOpacity } from 'react-native';
 import React, { useState } from "react";
+import { setNativeProps } from "react-native-reanimated";
 
 
 export default function Index() {
@@ -15,6 +16,14 @@ export default function Index() {
     { name: 'ewan8', id: '8'},
   ])
 
+  const pressHandler = (id: string) => {
+    console.log(id);
+    setPeople((prevPeople) => {
+      return prevPeople.filter(person => person.id != id)
+    })
+    
+  }
+
 
   return (
     <View style={styles.container}>
@@ -24,7 +33,9 @@ export default function Index() {
         keyExtractor={(item) => item.id}
         data={people}
         renderItem={({ item }) => (
-          <Text style={styles.item}>{item.name}</Text>
+          <TouchableOpacity onPress={() => pressHandler(item.id)}>
+            <Text style={styles.item}>{item.name}</Text>
+          </TouchableOpacity>
         )}
       />
 
