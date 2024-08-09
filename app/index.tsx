@@ -1,25 +1,42 @@
 import React, { useState } from "react";
 import { StyleSheet, Text, View, FlatList } from "react-native";
 import Header from "./components/header";
+import TodoItem from "./components/todoItem";
+import AddTodo from "./components/addTodo";
 
 
 export default function Index() {
   const [todos, setTodos] = useState([
     {text: 'buy coffee', key: '1'},
-    {text: 'buy the', key: '2'},
+    {text: 'buy tea', key: '2'},
     {text: 'buy biscuit', key: '3'}
   ])
+
+  const pressHandler = (key: string) => {
+    setTodos((prevTodos) => {
+      return prevTodos.filter(todo => todo.key != key)
+    })
+  }
+
+  const submitHandler = (text: string) => {
+    setTodos((prevTodos) => {
+      return [
+        { text: text, key: Math.random().toString() },
+        ...prevTodos
+      ];
+    })
+  }
 
   return (
     <View style={styles.container}>
       <Header/>
       <View style={styles.content}>
-        {/* to do form */}
+        <AddTodo submitHandler={submitHandler}/>
         <View style={styles.list}>
           <FlatList
           data={todos}
           renderItem={({ item }) => (
-            <Text>{item.text}</Text>
+            <TodoItem item={item} pressHandler={pressHandler} />
           )}
           />
         </View>
